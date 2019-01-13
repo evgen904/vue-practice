@@ -69,9 +69,7 @@
             email: this.email,
             password: this.password
           }
-
-          console.log(user);
-
+          console.log(user)
         }
       }
     }
