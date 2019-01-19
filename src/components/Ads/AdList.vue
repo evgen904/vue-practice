@@ -1,8 +1,35 @@
 <template>
   <v-container>
     <v-layout row>
-      <v-flex xs12>
-        <h1>AdList</h1>
+      <v-flex xs12 sm6 offset-sm3>
+        <h1 class="text--secondary mb-3">My ads</h1>
+        <v-card
+          v-for="ad in ads"
+          :key="ad.id"
+          class="elevation-10 mb-3"
+        >
+          <v-layout row>
+            <v-flex xs-4>
+              <v-card-media
+                :src="ad.imagesSrc"
+                height="160px"
+              ></v-card-media>
+            </v-flex>
+            <v-flex xs-8>
+              <v-card-text>
+                <h2 class="text--primary">{{ad.title}}</h2>
+                <p>{{ad.description}}</p>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  :to="'/ad/' + ad.id"
+                  class="info"
+                >Open</v-btn>
+              </v-card-actions>
+            </v-flex>
+          </v-layout>
+        </v-card>
       </v-flex>
     </v-layout>
   </v-container>
@@ -11,7 +38,24 @@
 <script>
   export default {
     data () {
-      return {}
+      return {
+        ads: [
+          {
+            title: 'First ad',
+            description: 'Hello i am description',
+            promo: false,
+            imagesSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+            id: '123'
+          },
+          {
+            title: 'Second ad',
+            description: 'Hello i am description',
+            promo: true,
+            imagesSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+            id: '123123'
+          }
+        ]
+      }
     }
   }
 </script>
