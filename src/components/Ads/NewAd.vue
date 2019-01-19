@@ -83,9 +83,10 @@
           const ad = {
             title: this.title,
             description: this.description,
-            promo: this.promo
+            promo: this.promo,
+            imagesSrc: 'https://www.valuecoders.com/blog/wp-content/uploads/2017/11/featurednew.jpeg'
           }
-          console.log(ad)
+          this.$store.dispatch('createAd', ad)
         }
       }
     }
