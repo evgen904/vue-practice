@@ -3,7 +3,12 @@ import App from './App'
 import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
-import * as fb from 'firebase'
+import fb from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/firestore'
+import 'firebase/messaging'
+import 'firebase/functions'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify)

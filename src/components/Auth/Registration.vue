@@ -89,7 +89,7 @@
             email: this.email,
             password: this.password
           }
-          this.$store.dispatch('registrUser', user)
+          this.$store.dispatch('registerUser', user)
             .then(() => {
               this.$router.push('/')
             })

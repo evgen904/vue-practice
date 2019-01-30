@@ -1,3 +1,21 @@
+import fb from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/firestore'
+import 'firebase/messaging'
+import 'firebase/functions'
+
+class Ad {
+  constructor (title, description, ownerId, imageSrc = '', promo = false, id = null) {
+    this.title = title
+    this.description = description
+    this.ownerId = ownerId
+    this.imageSrc = imageSrc
+    this.promo = promo
+    this.id = id
+  }
+}
+
 export default {
   state: {
     ads: [
@@ -5,21 +23,21 @@ export default {
         title: 'First ad',
         description: 'Hello i am description',
         promo: false,
-        imagesSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
         id: '123'
       },
       {
         title: 'Second ad',
         description: 'Hello i am description',
         promo: true,
-        imagesSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
         id: '123123'
       },
       {
         title: 'Third ad',
         description: 'Hello i am description',
         promo: true,
-        imagesSrc: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
         id: '123123123'
       }
     ]
@@ -30,10 +48,30 @@ export default {
     }
   },
   actions: {
-    createAd ({commit}, payload) {
-      payload.id = 'sdfdsf'
+    async createAd ({commit, getters}, payload) {
+      commit('clearError')
+      commit('setLoading', true)
 
-      commit('createAd', payload)
+      try {
+        const newAd = new Ad(
+          payload.title,
+          payload.description,
+          getters.user.id,
+          payload.imageSrc,
+          payload.promo
+        )
+
+        const ad = await fb.database().ref('ads').push(newAd)
+        commit('setLoading', false)
+        commit('createAd', {
+          ...newAd,
+          id: ad.key
+        })
+      } catch (error) {
+        commit('setError', error.message)
+        commit('setLoading', false)
+        throw error
+      }
     }
   },
   getters: {

@@ -1,4 +1,9 @@
-import * as fb from 'firebase'
+import fb from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/firestore'
+import 'firebase/messaging'
+import 'firebase/functions'
 
 class User {
   constructor (id) {
@@ -16,14 +21,14 @@ export default {
     }
   },
   actions: {
-    async registrUser ({commit}, {email, password}) {
+    async registerUser ({commit}, {email, password}) {
       commit('clearError')
       commit('setLoading', true)
 
       try {
         const user = await fb.auth().createUserWithEmailAndPassword(email, password)
-        commit('setUser', new User(user.uid))
-        commit('setLoading', true)
+        commit('setUser', new User(user.user.uid))
+        commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
         commit('setError', error.message)
@@ -36,8 +41,8 @@ export default {
 
       try {
         const user = await fb.auth().signInWithEmailAndPassword(email, password)
-        commit('setUser', new User(user.uid))
-        commit('setLoading', true)
+        commit('setUser', new User(user.user.uid))
+        commit('setLoading', false)
       } catch (error) {
         commit('setLoading', false)
         commit('setError', error.message)

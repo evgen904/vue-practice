@@ -6,7 +6,7 @@
           <v-carousel>
             <v-carousel-item
               v-for="ad in promoAds"
-              :src="ad.imagesSrc"
+              :src="ad.imageSrc"
               :key="ad.id"
             >
               <div class="car-link">
@@ -28,7 +28,7 @@
         >
           <v-card>
             <v-img
-              :src="ad.imagesSrc"
+              :src="ad.imageSrc"
               height="200px"
             ></v-img>
 

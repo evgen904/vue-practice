@@ -53,7 +53,8 @@
         <v-layout row>
           <v-flex xs12>
             <v-btn
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="!valid || loading"
               class="success"
               @click="createAd"
             >
@@ -76,6 +77,11 @@
         valid: false
       }
     },
+    computed: {
+      loading () {
+        return this.$store.getters.loading
+      }
+    },
     methods: {
       createAd () {
         if (this.$refs.form.validate) {
@@ -84,9 +90,13 @@
             title: this.title,
             description: this.description,
             promo: this.promo,
-            imagesSrc: 'https://www.valuecoders.com/blog/wp-content/uploads/2017/11/featurednew.jpeg'
+            imageSrc: 'https://www.valuecoders.com/blog/wp-content/uploads/2017/11/featurednew.jpeg'
           }
           this.$store.dispatch('createAd', ad)
+            .then(() => {
+              this.$router.push('/list')
+            })
+            .catch(() => {})
         }
       }
     }
