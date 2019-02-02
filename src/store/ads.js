@@ -1,5 +1,6 @@
 import fb from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/storage'
 import 'firebase/database'
 import 'firebase/firestore'
 import 'firebase/messaging'
@@ -33,20 +34,33 @@ export default {
       commit('clearError')
       commit('setLoading', true)
 
+      const image = payload.image
+
       try {
         const newAd = new Ad(
           payload.title,
           payload.description,
           getters.user.id,
-          payload.imageSrc,
+          '',
           payload.promo
         )
 
         const ad = await fb.database().ref('ads').push(newAd)
-        commit('setLoading', false)
-        commit('createAd', {
-          ...newAd,
-          id: ad.key
+        const imageExt = image.name.slice(image.name.lastIndexOf('.'))
+
+        await fb.storage().ref(`ads/${ad.key}.${imageExt}`).put(image).then(uploadTaskSnapshot => {
+          uploadTaskSnapshot.ref.getDownloadURL().then((url) => {
+            const imageSrc = url
+            fb.database().ref('ads').child(ad.key).update({
+              imageSrc
+            })
+            commit('setLoading', false)
+            commit('createAd', {
+              ...newAd,
+              id: ad.key,
+              imageSrc
+            })
+          })
         })
       } catch (error) {
         commit('setError', error.message)
