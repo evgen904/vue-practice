@@ -11,8 +11,17 @@ import 'firebase/firestore'
 import 'firebase/messaging'
 import 'firebase/functions'
 import 'vuetify/dist/vuetify.min.css'
+import colors from 'vuetify/es5/util/colors'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: colors.red.darken1
+  }
+})
+
+
+
+
 
 Vue.component('app-buy-modal', BuyModalComponent)
 
